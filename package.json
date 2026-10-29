@@ -13,7 +13,7 @@
     "express": "^4.22.3",
     "express-session": "^1.19.0",
     "helmet": "^2.0.0",
-    "marked": "0.3.5",
+    "marked": "0.3.19",
     "mongodb": "^2.1.18",
     "needle": "^2.9.1",
     "node-esapi": "0.0.1",
@@ -60,5 +60,9 @@
     "zaproxy": "^0.2.0"
   },
   "repository": "https://github.com/OWASP/NodejsGoat",
-  "license": "Apache 2.0"
+  "license": "Apache 2.0",
+  "overrides": {
+    "minimist": "^1.2.8",
+    "uglify-js": "^2.8.29"
+  }
 }

@@ -27,13 +27,14 @@ const httpsOptions = {
 };
 */
 
-MongoClient.connect(db, (err, db) => {
+MongoClient.connect(db, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
     if (err) {
         console.log("Error: DB: connect");
         console.log(err);
         process.exit(1);
     }
     console.log(`Connected to the database`);
+    const db = client.db();
 
     /*
     // Fix for A5 - Security MisConfig

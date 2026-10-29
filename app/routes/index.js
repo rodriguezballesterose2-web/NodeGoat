@@ -68,8 +68,17 @@ const index = (app, db) => {
 
     // Handle redirect for learning resources link
     app.get("/learn", isLoggedIn, (req, res) => {
-        // Insecure way to handle redirects by taking redirect url from query string
-        return res.redirect(req.query.url);
+        // Only redirect to https URLs whose host is in the allow-list (prevents open redirect)
+        const allowedHosts = ["www.khanacademy.org"];
+        try {
+            const target = new URL(req.query.url);
+            if (target.protocol === "https:" && allowedHosts.includes(target.hostname)) {
+                return res.redirect(target.href);
+            }
+        } catch (e) {
+            // invalid URL: falls through to the error response
+        }
+        return res.status(400).send("Invalid redirect URL");
     });
 
     // Research Page

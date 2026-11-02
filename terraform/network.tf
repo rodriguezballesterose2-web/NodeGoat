@@ -61,3 +61,49 @@ resource "aws_flow_log" "vpc" {
   log_destination = aws_cloudwatch_log_group.flow.arn
   iam_role_arn    = aws_iam_role.flow.arn
 }
+
+# ACL por defecto de la VPC: solo trafico de la aplicacion dentro de la VPC
+resource "aws_default_network_acl" "default" {
+  default_network_acl_id = aws_vpc.main.default_network_acl_id
+  subnet_ids             = [aws_subnet.app.id]
+
+  ingress {
+    rule_no    = 100
+    action     = "allow"
+    protocol   = "tcp"
+    cidr_block = var.vpc_cidr
+    from_port  = var.app_port
+    to_port    = var.app_port
+  }
+
+  ingress {
+    rule_no    = 110
+    action     = "allow"
+    protocol   = "tcp"
+    cidr_block = var.vpc_cidr
+    from_port  = 1024
+    to_port    = 65535
+  }
+
+  egress {
+    rule_no    = 100
+    action     = "allow"
+    protocol   = "tcp"
+    cidr_block = var.vpc_cidr
+    from_port  = 443
+    to_port    = 443
+  }
+
+  egress {
+    rule_no    = 110
+    action     = "allow"
+    protocol   = "tcp"
+    cidr_block = var.vpc_cidr
+    from_port  = 1024
+    to_port    = 65535
+  }
+
+  tags = {
+    Name = "${var.name}-acl"
+  }
+}

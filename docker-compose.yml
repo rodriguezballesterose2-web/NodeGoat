@@ -1,17 +1,45 @@
-version: "3.7"
-
 services:
   web:
     build: .
     environment:
-      NODE_ENV:
-      MONGODB_URI: mongodb://mongo:27017/nodegoat
+      NODE_ENV: production
+      MONGODB_URI: mongodb://${APP_DB_USER}:${APP_DB_PASSWORD}@mongo:27017/nodegoat
     command: sh -c "until nc -z -w 2 mongo 27017 && echo 'mongo is ready for connections' && node artifacts/db-reset.js && npm start; do sleep 2; done"
     ports:
-      - "4000:4000"
+      - "127.0.0.1:4000:4000"
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 200
+    depends_on:
+      - mongo
 
   mongo:
-    image: mongo:4.4
+    image: mongo:4.4.29
     user: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: nodegoat
+      APP_DB_USER: ${APP_DB_USER}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD}
+    volumes:
+      - ./mongo-init:/docker-entrypoint-initdb.d:ro
     expose:
       - 27017
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 1g
+    cpus: 1.0
+    pids_limit: 200

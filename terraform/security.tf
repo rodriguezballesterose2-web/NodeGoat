@@ -111,6 +111,18 @@ data "aws_iam_policy_document" "flow_assume" {
       type        = "Service"
       identifiers = ["vpc-flow-logs.amazonaws.com"]
     }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [var.account_id]
+    }
+
+    condition {
+      test     = "ArnLike"
+      variable = "aws:SourceArn"
+      values   = ["arn:aws:ec2:${var.region}:${var.account_id}:vpc-flow-log/*"]
+    }
   }
 }
 

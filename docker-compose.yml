@@ -6,7 +6,7 @@ services:
       MONGODB_URI: mongodb://${APP_DB_USER}:${APP_DB_PASSWORD}@mongo:27017/nodegoat
       COOKIE_SECRET: ${COOKIE_SECRET}
       CRYPTO_KEY: ${CRYPTO_KEY}
-    command: sh -c "until nc -z -w 2 mongo 27017 && echo 'mongo is ready for connections' && node artifacts/db-reset.js && npm start; do sleep 2; done"
+    command: sh -c "until nc -z -w 2 mongo 27017 && echo 'mongo is ready for connections' && node artifacts/db-reset.js && node server.js; do sleep 2; done"
     ports:
       - "127.0.0.1:4000:4000"
     read_only: true

@@ -15,6 +15,8 @@ COPY --chown=node:node package.json package-lock.json server.js ./
 COPY --chown=node:node app app
 COPY --chown=node:node config config
 COPY --chown=node:node artifacts artifacts
+# Se elimina npm: la app arranca con node y npm de la imagen base trae vulnerabilidades
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 USER $USER
 EXPOSE 4000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \

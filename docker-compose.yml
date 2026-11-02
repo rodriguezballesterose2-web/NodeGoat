@@ -23,7 +23,8 @@ services:
       - mongo
 
   mongo:
-    image: mongo:4.4.30
+    build: ./mongo
+    image: nodegoat-mongo:4.4.30
     user: mongodb
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}

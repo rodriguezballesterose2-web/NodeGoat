@@ -44,3 +44,15 @@ variable "instance_type" {
   type    = string
   default = "t3.micro"
 }
+
+variable "enable_lifecycle_rules" {
+  description = "Reglas de ciclo de vida de S3. Se apagan en LocalStack, que no las confirma."
+  type        = bool
+  default     = true
+}
+
+variable "enable_instance" {
+  description = "Instancia EC2. Se apaga en LocalStack, que no emula bien su lectura."
+  type        = bool
+  default     = true
+}

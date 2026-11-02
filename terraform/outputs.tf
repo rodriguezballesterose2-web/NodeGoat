@@ -3,7 +3,7 @@ output "vpc_id" {
 }
 
 output "instance_id" {
-  value = aws_instance.app.id
+  value = one(aws_instance.app[*].id)
 }
 
 output "evidence_bucket" {

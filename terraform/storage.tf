@@ -34,6 +34,8 @@ resource "aws_s3_bucket_public_access_block" "evidence" {
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "evidence" {
+  count = var.enable_lifecycle_rules ? 1 : 0
+
   bucket = aws_s3_bucket.evidence.id
 
   rule {
@@ -97,6 +99,8 @@ resource "aws_s3_bucket_public_access_block" "access_logs" {
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "access_logs" {
+  count = var.enable_lifecycle_rules ? 1 : 0
+
   bucket = aws_s3_bucket.access_logs.id
 
   rule {

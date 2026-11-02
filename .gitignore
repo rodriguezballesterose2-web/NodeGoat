@@ -33,3 +33,7 @@ test/e2e/videos/
 # Never commit private keys
 artifacts/cert/*.key
 *.pem
+terraform/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan

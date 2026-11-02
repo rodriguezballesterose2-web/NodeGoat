@@ -59,6 +59,8 @@ resource "aws_s3_bucket_logging" "evidence" {
 }
 
 # ---------- Bucket de registros de acceso ----------
+# Excepcion: es el bucket de registros de acceso; activar su propio registro crearia un ciclo
+#trivy:ignore:AWS-0089
 resource "aws_s3_bucket" "access_logs" {
   #checkov:skip=CKV2_AWS_62:Laboratorio sin consumidor de eventos (SNS SQS o Lambda)
   #checkov:skip=CKV_AWS_144:Replicacion entre regiones propia de produccion y no aplica en LocalStack de una sola region
@@ -75,6 +77,7 @@ resource "aws_s3_bucket_versioning" "access_logs" {
 }
 
 # El registro de accesos de S3 solo admite cifrado SSE-S3 en el bucket destino
+#trivy:ignore:AWS-0132
 resource "aws_s3_bucket_server_side_encryption_configuration" "access_logs" {
   bucket = aws_s3_bucket.access_logs.id
 

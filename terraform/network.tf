@@ -37,11 +37,11 @@ resource "aws_security_group" "app" {
   }
 
   egress {
-    description = "Solo HTTPS saliente"
+    description = "Solo HTTPS saliente dentro de la VPC"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.vpc_cidr]
   }
 
   tags = {
